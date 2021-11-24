@@ -1,7 +1,7 @@
 {% set name = "eventlet" %}
-{% set version = "0.31.1" %}
+{% set version = "0.33.0" %}
 {% set bundle = "tar.gz" %}
-{% set hash = "b9e9126304fae3cdf203f1f17660bba79ab7c488e05d60331277cae4247f8d76" %}
+{% set hash = "80144f489c1bb273a51b6f96ff9785a382d2866b9bab1f5bd748385019f4141f" %}
 
 package:
   name: {{ name|lower }}
