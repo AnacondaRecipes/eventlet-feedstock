@@ -1,7 +1,7 @@
 {% set name = "eventlet" %}
-{% set version = "0.31.1" %}
+{% set version = "0.33.1" %}
 {% set bundle = "tar.gz" %}
-{% set hash = "b9e9126304fae3cdf203f1f17660bba79ab7c488e05d60331277cae4247f8d76" %}
+{% set hash = "afbe17f06a58491e9aebd7a4a03e70b0b63fd4cf76d8307bae07f280479b1515" %}
 
 package:
   name: {{ name|lower }}
@@ -14,23 +14,26 @@ source:
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv
+  skip: True  # [py<35]
+  # trigger: 0
 
 requirements:
   host:
-    - python >=3.5
+    - python
     - pip
     - setuptools
     - wheel
   run:
-    - python >=3.5
+    - python
     - greenlet >=0.3
-    - dnspython >=1.15.0,<2.0.0
+    - dnspython >=1.15.0
     - six >=1.10.0
     - pyopenssl
 
 test:
+  requires:
+    - dnspython >=2
   imports:
     - eventlet
     - eventlet.green
