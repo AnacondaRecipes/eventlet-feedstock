@@ -45,13 +45,13 @@ test:
 
 
 about:
-  home: http://eventlet.net
+  home: https://github.com/eventlet/eventlet
   license: MIT
   license_family: MIT
   license_file: LICENSE
   summary: Highly concurrent networking library
   dev_url: https://github.com/eventlet/eventlet
-  doc_url: http://eventlet.net
+  doc_url: https://eventlet.readthedocs.io/
 
 extra:
   recipe-maintainers:
