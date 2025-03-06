@@ -1,39 +1,33 @@
 {% set name = "eventlet" %}
-{% set version = "0.33.1" %}
-{% set bundle = "tar.gz" %}
-{% set hash = "afbe17f06a58491e9aebd7a4a03e70b0b63fd4cf76d8307bae07f280479b1515" %}
+{% set version = "0.39.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  sha256: {{ hash }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 01ba0aa6ee2452690fc02b274a2409598a13b997c7b5af9dc66600fa42015a79
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
-  skip: True  # [py<35]
-  # trigger: 0
+  skip: True  # [py<38]
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
-    - wheel
+    - hatch-vcs >=0.3
+    - hatchling >=1.12.2
   run:
     - python
-    - greenlet >=0.3
+    - greenlet >=1.0
     - dnspython >=1.15.0
-    - six >=1.10.0
+    # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
 
 test:
-  requires:
-    - dnspython >=2
   imports:
     - eventlet
     - eventlet.green
@@ -43,6 +37,7 @@ test:
     - eventlet.greenio
     - eventlet.hubs
     - eventlet.support
+    - eventlet.zipkin
   requires:
     - pip
   commands:
@@ -50,13 +45,13 @@ test:
 
 
 about:
-  home: http://eventlet.net
+  home: https://github.com/eventlet/eventlet
   license: MIT
   license_family: MIT
   license_file: LICENSE
   summary: Highly concurrent networking library
   dev_url: https://github.com/eventlet/eventlet
-  doc_url: http://eventlet.net
+  doc_url: https://eventlet.readthedocs.io/
 
 extra:
   recipe-maintainers:
