@@ -1,5 +1,5 @@
 {% set name = "eventlet" %}
-{% set version = "0.39.0" %}
+{% set version = "0.40.3" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 01ba0aa6ee2452690fc02b274a2409598a13b997c7b5af9dc66600fa42015a79
+  sha256: 290852db0065d78cec17a821b78c8a51cafb820a792796a354592ae4d5fceeb0
 
 build:
   number: 0
-  skip: True  # [py<38]
+  skip: True  # [py<39]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
@@ -22,27 +22,50 @@ requirements:
     - hatchling >=1.12.2
   run:
     - python
+      # Upstream not require max pin, but geenlet quite unstable dependency and would be good have a max pin
     - greenlet >=1.0
     - dnspython >=1.15.0
     # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
 
 test:
+  source_files:
+    - tests
   imports:
     - eventlet
+    - eventlet._version
+    - eventlet.asyncio
+    - eventlet.corolocal
+    - eventlet.dagpool
+    - eventlet.event
     - eventlet.green
-    - eventlet.green.OpenSSL
-    - eventlet.green.http
-    - eventlet.green.urllib
     - eventlet.greenio
+    - eventlet.greenthread
     - eventlet.hubs
+    - eventlet.lock
+    - eventlet.patcher
+    - eventlet.pools
+    - eventlet.semaphore
     - eventlet.support
+    - eventlet.timeout
+    - eventlet.tpool
+    - eventlet.websocket
     - eventlet.zipkin
   requires:
     - pip
+    - pytest
+    - pyopenssl     # [linux]
+    - aiohttp       # [linux]
+    - pyzmq >=21.0    # [py==39 and linux]
+    - pyzmq >=27.0    # [py>=310 and linux]
+    - mysqlclient >=2.0.3   # [py==39 and linux]
+    - psycopg2 >=2.8.0     # [py==39 and linux]
+    - psycopg2 >=2.9.0     # [py>=310 and linux]
   commands:
     - pip check
-
+    - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
+    - export EVENTLET_HUB=epolls       # [linux]
+    - pytest -ra -v --tb=short tests   # [linux]
 
 about:
   home: https://github.com/eventlet/eventlet
@@ -50,8 +73,16 @@ about:
   license_family: MIT
   license_file: LICENSE
   summary: Highly concurrent networking library
+  description: |
+    Eventlet is a concurrent networking library for Python that allows you to 
+    change how you run your code, not how you write it.
+    It uses epoll or libevent for highly scalable non-blocking I/O. 
+    Coroutines ensure that the developer uses a blocking style of programming 
+    that is similar to threading, but provide the benefits of non-blocking I/O. 
+    The event dispatch is implicit, which means you can easily use Eventlet from the 
+    Python interpreter, or as a small part of a larger application.
   dev_url: https://github.com/eventlet/eventlet
-  doc_url: https://eventlet.readthedocs.io/
+  doc_url: https://eventlet.readthedocs.io
 
 extra:
   recipe-maintainers:
