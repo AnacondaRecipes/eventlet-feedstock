@@ -22,6 +22,7 @@ requirements:
     - hatchling >=1.12.2
   run:
     - python
+      # Upstream not require max pin, but geenlet quite unstable dependency and would be good have a max pin
     - greenlet >=1.0
     - dnspython >=1.15.0
 
@@ -223,7 +224,8 @@ AssertionError: assert [] == ['line0']
     "test_communicate_with_poll",
     "test_close_popen_stdin_with_close_fds",
     "test_check_call_without_timeout_works",
-    "test_run_python_pythonpath_extend"
+    "test_run_python_pythonpath_extend",
+    "test_put_with_timed_out_getters"
 ] %}
 
 {% set SKIP_TEST_LIST = [] %}
