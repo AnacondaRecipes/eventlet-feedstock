@@ -79,12 +79,12 @@ test:
   requires:
     - pip
     - pytest
-    - pyopenssl
-    - aiohttp
-    - pyzmq 21.*    # [py==39]
-    - pyzmq 27.*    # [py>=310]
-    - psycopg2 2.8.*     # [py==39]
-    - psycopg2 2.9.*     # [py>=310]
+    - pyopenssl     # [linux]
+    - aiohttp       # [linux]
+    - pyzmq 21.*    # [py==39 and linux]
+    - pyzmq 27.*    # [py>=310 and linux]
+    - psycopg2 2.8.*     # [py==39 and linux]
+    - psycopg2 2.9.*     # [py>=310 and linux]
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
