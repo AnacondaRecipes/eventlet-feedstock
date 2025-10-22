@@ -264,6 +264,8 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
+    - export EVENTLET_HUB=epolls  # [linux]
+    - export EVENTLET_HUB=kqueue  # [osx]
     - pytest -ra -v --tb=short tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v -k "not slow and not ({{ SKIP_TEST_LIST | join(' or ') }})"
 
 about:
