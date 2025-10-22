@@ -25,7 +25,6 @@ requirements:
     - greenlet >=1.0
     - dnspython >=1.15.0
 
-
 # Mass failing testst due to greenlet FdListener('read', -1, …)
 #================================================================
 # $SRC_DIR/tests/__init__.py:245: AssertionError: Readers: Listener FdListener('read', 
@@ -41,16 +40,6 @@ requirements:
 #     verify_hub_empty()
 # tests/__init__.py:245: in verify_hub_empty
 #     assert num_readers == 0 and num_writers == 0, \
-
-# FAILED tests/env_test.py::test_tpool_size - AssertionError: timed out
-# FAILED tests/event_test.py::test_wait_timeout_ok - assert None
-# FAILED tests/greenio_test.py::test_double_close_219 - AssertionError: Expected single line "pass" in stdout
-# FAILED tests/hub_test.py::TestSuspend::test_suspend_doesnt_crash - AssertionError: b'Traceback (most recent call last):
-#     File "/var/folders/bf/zv4tnz9n509d_vvdxt3l9w8c0000gn/T/tmprv2x3kyttest_suspend/test_suspend.py", line 4, in <module>
-#   TypeError: changelist must be an iterable of select.kevent objects'
-# assert 'exited correctly' in 'TypeError: changelist must be an iterable of select.kevent objects'
-# FAILED tests/subprocess_test.py::test_patched_communicate_290 - AssertionError: Expected single line "pass" in stdout
-
 {% set SKIP_TEST_FILES = [
     "tests/mysqldb_test.py",
     "tests/patcher_test.py",
@@ -68,14 +57,36 @@ requirements:
     "tests/test__event.py",
 ] %}
 
+#  ModuleNotFoundError: No module named 'fcntl'
+
+# FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - AttributeError: module 'eventlet.green.socket' has no attribute 'AF_UNIX'
+# FAILED tests/greendns_test.py::TestHostsResolver::test_hosts_case_insensitive - dns.resolver.NoAnswer: The DNS response does not contain an answer to the question.
+# FAILED tests/greendns_test.py::TestHostsResolver::test_load_v4_v6_cname_aliases - AssertionError: assert {} == {'v4.example.com': '1.2.3.4', 'v4': '1.2.3.4'}
+  
+#   Right contains 2 more items:
+#   {'v4': '1.2.3.4', 'v4.example.com': '1.2.3.4'}
+  
+#   Full diff:
+#   + {}
+#   - {
+#   -     'v4': '1.2.3.4',
+#   -     'v4.example.com': '1.2.3.4',
+#   - }
+# FAILED tests/greendns_test.py::TestHostsResolver::test_readlines_lines - AssertionError: assert [] == ['line0']
 {% set SKIP_TEST_FILES_WIN = [
     "tests/greenio_test.py",
-    "tests/hub_test.py"
+    "tests/hub_test.py",
+    "tests/greendns_test.py"
 ] %}
 
-#  ModuleNotFoundError: No module named 'fcntl'
-{% set SKIP_TEST_FILES = SKIP_TEST_FILES + SKIP_TEST_FILES_WIN %}  # [win]
-
+# FAILED tests/env_test.py::test_tpool_size - AssertionError: timed out
+# FAILED tests/event_test.py::test_wait_timeout_ok - assert None
+# FAILED tests/greenio_test.py::test_double_close_219 - AssertionError: Expected single line "pass" in stdout
+# FAILED tests/hub_test.py::TestSuspend::test_suspend_doesnt_crash - AssertionError: b'Traceback (most recent call last):
+#     File "/var/folders/bf/zv4tnz9n509d_vvdxt3l9w8c0000gn/T/tmprv2x3kyttest_suspend/test_suspend.py", line 4, in <module>
+#   TypeError: changelist must be an iterable of select.kevent objects'
+# assert 'exited correctly' in 'TypeError: changelist must be an iterable of select.kevent objects'
+# FAILED tests/subprocess_test.py::test_patched_communicate_290 - AssertionError: Expected single line "pass" in stdout
 {% set SKIP_TEST_OSX = [
     "test_assignment",
     "test_calling_methods",
@@ -88,7 +99,8 @@ requirements:
     "test_tpool_size",
     "test_double_close_219",
     "test_suspend_doesnt_crash",
-    "test_patched_communicate_290"
+    "test_patched_communicate_290",
+    "test_can_use_eventlet_in_os_threads"
 
 ] %}
 
@@ -103,9 +115,11 @@ requirements:
 ] %}
 
 {% set SKIP_TEST_LIST = [] %}
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_OSX %}  # [osx]
+{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_OSX %}    # [osx]
 {% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_LINUX %}  # [linux]
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_WIN %}  # [win]
+{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_WIN %}    # [win]
+
+{% set SKIP_TEST_FILES = SKIP_TEST_FILES + SKIP_TEST_FILES_WIN %}  # [win]
 
 test:
   source_files:
@@ -144,6 +158,14 @@ about:
   license_family: MIT
   license_file: LICENSE
   summary: Highly concurrent networking library
+  description: |
+    Eventlet is a concurrent networking library for Python that allows you to 
+    change how you run your code, not how you write it.
+    It uses epoll or libevent for highly scalable non-blocking I/O. 
+    Coroutines ensure that the developer uses a blocking style of programming 
+    that is similar to threading, but provide the benefits of non-blocking I/O. 
+    The event dispatch is implicit, which means you can easily use Eventlet from the 
+    Python interpreter, or as a small part of a larger application.
   dev_url: https://github.com/eventlet/eventlet
   doc_url: https://eventlet.readthedocs.io
 
