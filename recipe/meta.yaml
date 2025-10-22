@@ -45,18 +45,6 @@ requirements:
 #     assert num_readers == 0 and num_writers == 0, \
 {% set SKIP_TEST_FILES = [
     "tests/mysqldb_test.py",
-    "tests/patcher_test.py",
-    "tests/queue_test.py",
-    "tests/semaphore_test.py",
-    "tests/timeout_test.py",
-    "tests/timeout_with_statement_test.py",
-    "tests/tpool_test.py",
-    "tests/websocket_test.py",
-    "tests/websocket_new_test.py",
-    "tests/wsgi_test.py",
-    "tests/zmq_test.py",
-    "tests/patcher_psycopg_test.py",
-    "tests/test__event.py",
 ] %}
 
 #FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
@@ -92,6 +80,11 @@ test:
     - pip
     - pytest
     - pyopenssl
+    - aiohttp
+    - pyzmq 21.*    # [py==39]
+    - pyzmq 27.*    # [py>=310]
+    - psycopg2 2.8.*     # [py==39]
+    - psycopg2 2.9.*     # [py>=310]
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
