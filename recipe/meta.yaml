@@ -28,23 +28,9 @@ requirements:
     # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
 
-# Mass failing testst due to greenlet FdListener('read', -1, …)
-#================================================================
-# $SRC_DIR/tests/__init__.py:245: AssertionError: Readers: Listener FdListener('read', 
-# -1, <function select.<locals>.on_read at 0x106cdf740>, <built-in method throw of greenlet.greenlet 
-# object at 0x103a0e240>) for greenlet <greenlet.greenlet object at 0x103a0e240 (otid=0x1039bb1b0) 
-# current active started main> with run callback None (1) Writers:  (0)
 
-# E   AssertionError: Readers: Listener FdListener('read', -1, <function select.<locals>.on_read at 0x10870e840>, <built-in method throw of greenlet.greenlet object at 0x10468cb80>) for greenlet <greenlet.greenlet object at 0x10468cb80 (otid=0x10463e5b0) current active started main> with run callback None (1) Writers:  (0)
-# ___ TestWebSocketWithCompression.test_accept_deflate_ext_context_takeover_13 ___
-# tests/wsgi_test.py:245: in tearDown
-#     super().tearDown()
-# tests/__init__.py:194: in tearDown
-#     verify_hub_empty()
-# tests/__init__.py:245: in verify_hub_empty
-#     assert num_readers == 0 and num_writers == 0, \
 {% set SKIP_TEST_FILES = [
-    "tests/mysqldb_test.py",
+    "____tests/mysqldb_test.py___",
 ] %}
 
 #FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
@@ -83,6 +69,7 @@ test:
     - aiohttp       # [linux]
     - pyzmq >=21.0    # [py==39 and linux]
     - pyzmq >=27.0    # [py>=310 and linux]
+    - mysqlclient >=2.0.3   # [py==39 and linux]
     - psycopg2 >=2.8.0     # [py==39 and linux]
     - psycopg2 >=2.9.0     # [py>=310 and linux]
   commands:
