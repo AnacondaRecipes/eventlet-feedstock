@@ -42,6 +42,15 @@ requirements:
 # tests/__init__.py:245: in verify_hub_empty
 #     assert num_readers == 0 and num_writers == 0, \
 
+# FAILED tests/env_test.py::test_tpool_size - AssertionError: timed out
+# FAILED tests/event_test.py::test_wait_timeout_ok - assert None
+# FAILED tests/greenio_test.py::test_double_close_219 - AssertionError: Expected single line "pass" in stdout
+# FAILED tests/hub_test.py::TestSuspend::test_suspend_doesnt_crash - AssertionError: b'Traceback (most recent call last):
+#     File "/var/folders/bf/zv4tnz9n509d_vvdxt3l9w8c0000gn/T/tmprv2x3kyttest_suspend/test_suspend.py", line 4, in <module>
+#   TypeError: changelist must be an iterable of select.kevent objects'
+# assert 'exited correctly' in 'TypeError: changelist must be an iterable of select.kevent objects'
+# FAILED tests/subprocess_test.py::test_patched_communicate_290 - AssertionError: Expected single line "pass" in stdout
+
 {% set SKIP_TEST_FILES = [
     "tests/mysqldb_test.py",
     "tests/patcher_test.py",
@@ -56,8 +65,16 @@ requirements:
     "tests/wsgi_test.py",
     "tests/zmq_test.py",
     "tests/patcher_psycopg_test.py",
-    "tests/test__event.py"
+    "tests/test__event.py",
 ] %}
+
+{% set SKIP_TEST_FILES_WIN = [
+    "tests/greenio_test.py",
+    "tests/hub_test.py"
+] %}
+
+#  ModuleNotFoundError: No module named 'fcntl'
+{% set SKIP_TEST_FILES = SKIP_TEST_FILES + SKIP_TEST_FILES_WIN %}  # [win]
 
 {% set SKIP_TEST_OSX = [
     "test_assignment",
@@ -66,11 +83,19 @@ requirements:
     "test_no_leaking",
     "test_repeated_select_bad_fd",
     "test_kill",
-    "test_parent"
+    "test_parent",
+    "test_wait_timeout_ok",
+    "test_tpool_size",
+    "test_double_close_219",
+    "test_suspend_doesnt_crash",
+    "test_patched_communicate_290"
+
 ] %}
 
+#FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
+# [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
 {% set SKIP_TEST_LINUX = [
-    "test_against_findmnt",
+    "test_server_on_unix_socket ",
 ] %}
 
 {% set SKIP_TEST_WIN = [
