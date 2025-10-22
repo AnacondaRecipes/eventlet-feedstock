@@ -25,6 +25,8 @@ requirements:
       # Upstream not require max pin, but geenlet quite unstable dependency and would be good have a max pin
     - greenlet >=1.0
     - dnspython >=1.15.0
+    # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
+    - pyopenssl
 
 # Mass failing testst due to greenlet FdListener('read', -1, …)
 #================================================================
@@ -46,7 +48,6 @@ requirements:
     "tests/patcher_test.py",
     "tests/queue_test.py",
     "tests/semaphore_test.py",
-    "tests/ssl_test.py",
     "tests/timeout_test.py",
     "tests/timeout_with_statement_test.py",
     "tests/tpool_test.py",
@@ -58,182 +59,11 @@ requirements:
     "tests/test__event.py",
 ] %}
 
-# ModuleNotFoundError: No module named 'fcntl'
-# FAILED tests/greendns_test.py::TestHostsResolver::test_hosts_case_insensitive - 
-# dns.resolver.NoAnswer: The DNS response does not contain an answer to the question.
-# FAILED tests/greendns_test.py::TestHostsResolver::test_load_v4_v6_cname_aliases - 
-# AssertionError: assert {} == {'v4.example.com': '1.2.3.4', 'v4': '1.2.3.4'}
-# FAILED tests/greendns_test.py::TestHostsResolver::test_readlines_lines - 
-AssertionError: assert [] == ['line0']
-{% set SKIP_TEST_FILES_WIN = [
-    "tests/greenio_test.py",
-    "tests/hub_test.py",
-    "tests/greendns_test.py"
-] %}
-
-# FAILED tests/env_test.py::test_tpool_size - AssertionError: timed out
-# FAILED tests/event_test.py::test_wait_timeout_ok - assert None
-# FAILED tests/greenio_test.py::test_double_close_219 - AssertionError: Expected single line "pass" in stdout
-# FAILED tests/hub_test.py::TestSuspend::test_suspend_doesnt_crash - AssertionError: b'Traceback (most recent call last):
-#     File "/var/folders/bf/zv4tnz9n509d_vvdxt3l9w8c0000gn/T/tmprv2x3kyttest_suspend/test_suspend.py", line 4, in <module>
-#   TypeError: changelist must be an iterable of select.kevent objects'
-# assert 'exited correctly' in 'TypeError: changelist must be an iterable of select.kevent objects'
-# FAILED tests/subprocess_test.py::test_patched_communicate_290 - AssertionError: Expected single line "pass" in stdout
-{% set SKIP_TEST_OSX = [
-    "test_assignment",
-    "test_calling_methods",
-    "test_calls_init",
-    "test_no_leaking",
-    "test_repeated_select_bad_fd",
-    "test_kill",
-    "test_parent",
-    "test_wait_timeout_ok",
-    "test_tpool_size",
-    "test_double_close_219",
-    "test_suspend_doesnt_crash",
-    "test_patched_communicate_290",
-    "test_can_use_eventlet_in_os_threads"
-
-] %}
-
 #FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
 # [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
 {% set SKIP_TEST_LINUX = [
     "test_server_on_unix_socket",
 ] %}
-
-# FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - AttributeError: 
-# module 'eventlet.green.socket' has no attribute 'AF_UNIX'
-# FAILED tests/dagpool_test.py::test_check_no_suspend - AssertionError: failed to raise expected exception type
-# FAILED tests/dagpool_test.py::test_wait_each_posted - AssertionError: assert [{'got (b, 2)', 
-# 'got (c, 3)'}, set(), {'got (f, fval)', 'got (d, dval)', 'got (e, eval)', 'got (g, gval)'}] == [{'got 
-# FAILED tests/dagpool_test.py::test_spawn_collision_spawn - AssertionError: assert None == 'aval'
-# FAILED tests/greenpool_test.py::GreenPool::test_spawn_n - AssertionError: 
-# Lists differ: [2, 3, 1, 0, 5, 4, 6, 7, 8, 9] != [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-# FAILED tests/greenthread_test.py::SpawnAfter::test_n - assert False
-#  +  where False = <greenlet.greenlet object at 0x000001A68AE96E40 (otid=0x0000000000000000) pending>.dead
-# FAILED tests/os_test.py::test_os_read_nonblocking - AssertionError: Expected single line "pass" in stdout
-# FAILED tests/os_test.py::test_os_write_nonblocking - AssertionError: Expected single line "pass" in stdout
-# FAILED tests/pools_test.py::TestIntPool::test_blocks_on_pool - AssertionError: 0 != 1
-# FAILED tests/subprocess_test.py::test_communicate_with_poll - AssertionError: did not stop within allowed time
-# assert 0.5294375419616699 <= 0.2
-# FAILED tests/subprocess_test.py::test_close_popen_stdin_with_close_fds - FileNotFoundError: [WinError 2] 
-# The system cannot find the file specified
-# FAILED tests/subprocess_test.py::test_check_call_without_timeout_works - FileNotFoundError: [WinError 2] 
-# The system cannot find the file specified
-# FAILED tests/test_infrastructure_tests.py::test_run_python_pythonpath_extend - AssertionError: 
-# assert b'/dira\n' in b'\r\nC:\\miniconda3\\conda-bld\\eventlet_1761153214807\\test_tmp\\dira\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\test_tmp\\dirb\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\python310.zip\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\DLLs\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\lib\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\r\n
-# C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\lib\\site-packages\r\n'
-
-# ERROR tests/backdoor_test.py::BackdoorTest::test_server - AssertionError: 
-# Readers: Listener FdListener('read', 840, <built-in method switch of GreenThread object 
-# at 0x0000021689416540>, <built-in method throw of GreenThread object at 0x0000021689416540>) 
-# for greenlet <GreenThread object at 0x0000021689416540 (otid=0x0000021687C87DB0) suspended active started> 
-# with run callback None, Listener FdListener('read', 856, <bound method SocketConsole.switch of 
-# <SocketConsole object at 0x0000021688AA0B40 (otid=0x0000021687C87DB0) suspended active started>>, 
-# <built-in method throw of SocketConsole object at 0x0000021688AA0B40>) for greenlet 
-# <SocketConsole object at 0x0000021688AA0B40 (otid=0x0000021687C87DB0) suspended active started> 
-# with run callback <bound method SocketConsole.run of <SocketConsole object at 0x0000021688AA0B40 
-# (otid=0x0000021687C87DB0) suspended active started>> (2) Writers:  (0)
-{% set SKIP_TEST_WIN = [
-    "test_server",
-    "test_server_on_ipv6_socket",
-    "test_waiting",
-    "test_simple",
-    "test_cancel_already_started",
-    "test_kill",
-    "test_kill_meth",
-    "test_kill_n",
-    "test_blocking",
-    "test_called_for_each_connection",
-    "test_concurrency",
-    "test_excepting_server",
-    "test_excepting_server_already_closed",
-    "test_exiting_server",
-    "test_raising_stopserve",
-    "test_wrap_ssl",
-    "test_everything",
-    "test_hub_exceptions",
-    "test_double_exception",
-    "test_multiple_waiters",
-    "test_multiple_waiters_with_exception",
-    "test_reset",
-    "test_waiting_for_event",
-    "test_empty_imap",
-    "test_exceptions",
-    "test_imap",
-    "test_imap_multi_args",
-    "test_imap_nonefunc",
-    "test_imap_raises",
-    "test_multiple_coros",
-    "test_pool_smash",
-    "test_recursive_waitall",
-    "test_reentrant",
-    "test_resize",
-    "test_spawn",
-    "test_starmap",
-    "test_timer_cancel",
-    "test_waitall_on_nothing",
-    "test_waiting",
-    "test_constructing_from_pool",
-    "test_empty_pile",
-    "test_pile",
-    "test_pile_spawn_times_out",
-    "test_imap_50",
-    "test_imap_500",
-    "test_ordering_5",
-    "test_ordering_50",
-    "test_with_intpool",
-    "test_kill",
-    "test_kill_meth",
-    "test_kill_n",
-    "test_link",
-    "test_link_after_exited",
-    "test_link_relinks",
-    "test_simple",
-    "test_basic",
-    "test_cancel",
-    "test_cancel_already_started",
-    "test_kill",
-    "test_kill_already_started",
-    "test_kill_meth",
-    "test_kill_n",
-    "test_link",
-    "test_link_after_exited",
-    "test_link_relinks",
-    "test_spawn_is_not_cancelled",
-    "test_timer_cancelled_upon_greenlet_exit",
-    "test_timer_fired",
-    "test_assignment",
-    "test_calling_methods",
-    "test_calls_init"
-    "test_server_on_unix_socket",
-    "test_check_no_suspend",
-    "test_wait_each_posted",
-    "test_spawn_collision_spawn",
-    "test_spawn_n",
-    "test_n",
-    "test_os_read_nonblocking",
-    "test_os_write_nonblocking",
-    "test_blocks_on_pool",
-    "test_communicate_with_poll",
-    "test_close_popen_stdin_with_close_fds",
-    "test_check_call_without_timeout_works",
-    "test_run_python_pythonpath_extend",
-    "test_put_with_timed_out_getters"
-] %}
-
-{% set SKIP_TEST_LIST = [] %}
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_OSX %}    # [osx]
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_LINUX %}  # [linux]
-{% set SKIP_TEST_LIST = SKIP_TEST_LIST + SKIP_TEST_WIN %}    # [win]
-
-{% set SKIP_TEST_FILES = SKIP_TEST_FILES + SKIP_TEST_FILES_WIN %}  # [win]
 
 test:
   source_files:
@@ -261,12 +91,12 @@ test:
   requires:
     - pip
     - pytest
+    - pyopenssl
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
     - export EVENTLET_HUB=epolls  # [linux]
-    - export EVENTLET_HUB=kqueue  # [osx]
-    - pytest -ra -v --tb=short tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v -k "not slow and not ({{ SKIP_TEST_LIST | join(' or ') }})"
+    - pytest -ra -v --tb=short tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v -k "not slow and not ({{ SKIP_TEST_LINUX | join(' or ') }})"  # [linux]
 
 about:
   home: https://github.com/eventlet/eventlet
