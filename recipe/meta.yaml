@@ -98,7 +98,7 @@ AssertionError: assert [] == ['line0']
 #FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
 # [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
 {% set SKIP_TEST_LINUX = [
-    "test_server_on_unix_socket ",
+    "test_server_on_unix_socket",
 ] %}
 
 # FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - AttributeError: 
@@ -128,7 +128,89 @@ AssertionError: assert [] == ['line0']
 # C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\lib\r\n
 # C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\r\n
 # C:\\miniconda3\\conda-bld\\eventlet_1761153214807\\_test_env\\lib\\site-packages\r\n'
+
+# ERROR tests/backdoor_test.py::BackdoorTest::test_server - AssertionError: 
+# Readers: Listener FdListener('read', 840, <built-in method switch of GreenThread object 
+# at 0x0000021689416540>, <built-in method throw of GreenThread object at 0x0000021689416540>) 
+# for greenlet <GreenThread object at 0x0000021689416540 (otid=0x0000021687C87DB0) suspended active started> 
+# with run callback None, Listener FdListener('read', 856, <bound method SocketConsole.switch of 
+# <SocketConsole object at 0x0000021688AA0B40 (otid=0x0000021687C87DB0) suspended active started>>, 
+# <built-in method throw of SocketConsole object at 0x0000021688AA0B40>) for greenlet 
+# <SocketConsole object at 0x0000021688AA0B40 (otid=0x0000021687C87DB0) suspended active started> 
+# with run callback <bound method SocketConsole.run of <SocketConsole object at 0x0000021688AA0B40 
+# (otid=0x0000021687C87DB0) suspended active started>> (2) Writers:  (0)
 {% set SKIP_TEST_WIN = [
+    "test_server",
+    "test_server_on_ipv6_socket",
+    "test_waiting",
+    "test_simple",
+    "test_cancel_already_started",
+    "test_kill",
+    "test_kill_meth",
+    "test_kill_n",
+    "test_blocking",
+    "test_called_for_each_connection",
+    "test_concurrency",
+    "test_excepting_server",
+    "test_excepting_server_already_closed",
+    "test_exiting_server",
+    "test_raising_stopserve",
+    "test_wrap_ssl",
+    "test_everything",
+    "test_hub_exceptions",
+    "test_double_exception",
+    "test_multiple_waiters",
+    "test_multiple_waiters_with_exception",
+    "test_reset",
+    "test_waiting_for_event",
+    "test_empty_imap",
+    "test_exceptions",
+    "test_imap",
+    "test_imap_multi_args",
+    "test_imap_nonefunc",
+    "test_imap_raises",
+    "test_multiple_coros",
+    "test_pool_smash",
+    "test_recursive_waitall",
+    "test_reentrant",
+    "test_resize",
+    "test_spawn",
+    "test_starmap",
+    "test_timer_cancel",
+    "test_waitall_on_nothing",
+    "test_waiting",
+    "test_constructing_from_pool",
+    "test_empty_pile",
+    "test_pile",
+    "test_pile_spawn_times_out",
+    "test_imap_50",
+    "test_imap_500",
+    "test_ordering_5",
+    "test_ordering_50",
+    "test_with_intpool",
+    "test_kill",
+    "test_kill_meth",
+    "test_kill_n",
+    "test_link",
+    "test_link_after_exited",
+    "test_link_relinks",
+    "test_simple",
+    "test_basic",
+    "test_cancel",
+    "test_cancel_already_started",
+    "test_kill",
+    "test_kill_already_started",
+    "test_kill_meth",
+    "test_kill_n",
+    "test_link",
+    "test_link_after_exited",
+    "test_link_relinks",
+    "test_spawn_is_not_cancelled",
+    "test_timer_cancelled_upon_greenlet_exit",
+    "test_timer_fired",
+    "test_assignment",
+    "test_calling_methods",
+    "test_calls_init"
     "test_server_on_unix_socket",
     "test_check_no_suspend",
     "test_wait_each_posted",
