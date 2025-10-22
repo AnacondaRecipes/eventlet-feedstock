@@ -28,17 +28,6 @@ requirements:
     # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
 
-
-{% set SKIP_TEST_FILES = [
-    "____tests/mysqldb_test.py___",
-] %}
-
-#FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError: 
-# [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
-{% set SKIP_TEST_LINUX = [
-    "test_server_on_unix_socket",
-] %}
-
 test:
   source_files:
     - tests
@@ -75,8 +64,8 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
-    - export EVENTLET_HUB=epolls  # [linux]
-    - pytest -ra -v --tb=short tests {% for file in SKIP_TEST_FILES %} --ignore={{ file }}{% endfor %} -v -k "not slow and not ({{ SKIP_TEST_LINUX | join(' or ') }})"  # [linux]
+    - export EVENTLET_HUB=epolls       # [linux]
+    - pytest -ra -v --tb=short tests   # [linux]
 
 about:
   home: https://github.com/eventlet/eventlet
