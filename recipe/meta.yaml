@@ -61,7 +61,7 @@ test:
     - pip
     - pytest
     - pyopenssl     # [linux]
-    - aiohttp       # [linux]
+    - aiohttp       # [linux and not py==314]
     - pyzmq >=21.0    # [py==39 and linux]
     - pyzmq >=27.0    # [py>=310 and linux]
     - mysqlclient >=2.0.3   # [py==39 and linux]
