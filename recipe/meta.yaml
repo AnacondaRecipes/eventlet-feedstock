@@ -1,5 +1,5 @@
 {% set name = "eventlet" %}
-{% set version = "0.40.3" %}
+{% set version = "0.41.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 290852db0065d78cec17a821b78c8a51cafb820a792796a354592ae4d5fceeb0
+  sha256: 35df85f0ccd3e73effb6fd9f1ceae46b500b966c7da1817289c323a307bd397b
 
 build:
-  number: 1
-  skip: True  # [py<39]
+  number: 0
+  skip: True  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
@@ -62,11 +62,8 @@ test:
     - pytest
     - pyopenssl     # [linux]
     - aiohttp       # [linux and not py==314]
-    - pyzmq >=21.0    # [py==39 and linux]
-    - pyzmq >=27.0    # [py>=310 and linux]
-    - mysqlclient >=2.0.3   # [py==39 and linux]
-    - psycopg2 >=2.8.0     # [py==39 and linux]
-    - psycopg2 >=2.9.0     # [py>=310 and linux]
+    - pyzmq >=27.0    # [linux]
+    - psycopg2 >=2.9.0     # [linux]
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert version('{{ name }}') == '{{ version }}'"
