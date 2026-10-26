@@ -1,11 +1,6 @@
 {% set name = "eventlet" %}
 {% set version = "0.41.2" %}
-{% set SKIP_TEST_LINUX = [
-  "test_server_on_unix_socket"
-] %}
 
-#FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError:
-# [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -32,6 +27,12 @@ requirements:
     - dnspython >=1.15.0
     # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
+
+#FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError:
+# [Errno 1] Operation not permitted: '/tmp/eventlet_backdoor_test.socket'
+{% set SKIP_TEST_LINUX = [
+  "test_server_on_unix_socket"
+] %}
 
 test:
   source_files:
