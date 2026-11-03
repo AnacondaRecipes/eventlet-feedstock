@@ -1,13 +1,13 @@
 {% set name = "eventlet" %}
-{% set version = "0.41.2" %}
+{% set version = "0.41.3" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 721b86b77fca33a735598292022ac6feef99747bf48f52defdada6b572acd5af
+  sha256: 66d1883f276e94d040d007e99d7085e6aa5f2738c5b8783d165a137050dc8fb6
 
 build:
   number: 0
@@ -22,10 +22,9 @@ requirements:
     - hatchling >=1.12.2
   run:
     - python
-    # Upstream not require max pin, but geenlet quite unstable dependency and would be good have a max pin
     - greenlet >=1.0
     - dnspython >=1.15.0
-    # https://github.com/eventlet/eventlet/blob/0.39.0/eventlet/green/OpenSSL/crypto.py#L1
+    # https://github.com/eventlet/eventlet/blob/0.41.3/eventlet/green/OpenSSL/crypto.py#L1
     - pyopenssl
 
 #FAILED tests/backdoor_test.py::BackdoorTest::test_server_on_unix_socket - PermissionError:
